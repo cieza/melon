@@ -1,15 +1,9 @@
 var request = require('request');
 var fs = require('fs');
 
-
-const folderName= 'teste';
-const username= 'wall';
-const password= 'agatha';
-
-
-
-
-
+const folderName= process.argv[2];
+const username= process.argv[3];
+const password= process.argv[4];
 
 var token = '';
 function tratarDownload(scanId) {
