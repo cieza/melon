@@ -4,11 +4,15 @@ var fs = require('fs');
 const folderName= process.argv[2];
 const username= process.argv[3];
 const password= process.argv[4];
+const dirName = process.argv[5];
+if (!dirName.endsWith("/")) {
+  dirName = dirName+"/";
+}
 
 var token = '';
 function tratarDownload(scanId) {
   const tratar = (error, response, body) => {
-    fs.writeFile(scanId+'.nessus', body, function (err) {
+    fs.writeFile(dirName+scanId+'.nessus', body, function (err) {
       if (err) throw err;
         console.log('File '+scanId+' Saved!');
     }); 
