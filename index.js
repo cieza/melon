@@ -17,6 +17,17 @@ var dirName;
 
 prompt.start();
 
+function pegarPasta(){
+  prompt.get(['folderName'], function (err, result) {
+    console.log('Insira o nome da pasta correto:');
+    console.log('  folderName: ' + result.folderName);
+
+    folderName= result.folderName;
+
+    fazerLogin();
+  });
+}
+
 prompt.get(['folderName', 'username', 'password', 'dirName'], function (err, result) {
     console.log('Insira as seguintes informacoes:');
     console.log('  folderName: ' + result.folderName);
@@ -124,6 +135,7 @@ function getScans(error, response, body) {
   }
 	else{
 		console.log("Pasta "+folderName+" nao encontrada!");
+    pegarPasta();
 	}
 
 }
