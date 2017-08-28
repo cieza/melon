@@ -98,6 +98,10 @@ function getScans(error, response, body) {
       }
     });
   }
+	else{
+		console.log("Pasta "+folderName+" nao encontrada!");
+	}
+
 }
 
 var options = {
