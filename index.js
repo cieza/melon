@@ -1,13 +1,36 @@
 var request = require('request');
 var fs = require('fs');
+var prompt = require('prompt');
 
-const folderName= process.argv[2];
+/*const folderName= process.argv[2];
 const username= process.argv[3];
 const password= process.argv[4];
 const dirName = process.argv[5];
 if (!dirName.endsWith("/")) {
   dirName = dirName+"/";
-}
+}*/
+
+var folderName;
+var username;
+var password;
+var dirName;
+
+prompt.start();
+
+prompt.get(['folderName', 'username', 'password', 'dirName'], function (err, result) {
+    console.log('Insira as seguintes informacoes:');
+    console.log('  folderName: ' + result.folderName);
+    console.log('  username: ' + result.username);
+    console.log('  password: ' + result.password);
+    console.log('  dirName: ' + result.dirName);
+
+    folderName= result.folderName;
+    username= result.username;
+    password= result.password;
+    dirName= result.dirName;
+
+    fazerLogin();
+  });
 
 var token = '';
 function tratarDownload(scanId) {
@@ -76,6 +99,7 @@ function tratarExport(scanId) {
 function getScans(error, response, body) {
   //console.log('FOLDERS: ',body);
   var folder = null;
+  //console.log("error: ",error);
   body.folders.forEach(function(aux){
     if (aux.name === folderName) {
       folder = aux;
@@ -104,6 +128,8 @@ function getScans(error, response, body) {
 
 }
 
+function fazerLogin(){
+
 var options = {
   method: 'post',
   body: {username: username, password: password},
@@ -129,4 +155,4 @@ request(options, function(error, response, body) {
   request(options, getScans);
 
 
-});
+});}
