@@ -98,6 +98,8 @@ body.folders.forEach(function(aux){
   }
 });
 if (folder) {
+  dirName = readline.question("Nome da pasta destino dos scans:\n");
+	
   body.scans.forEach(function(aux){
     if (aux.folder_id === folder.id) {
      var options = {
@@ -116,7 +118,7 @@ if (folder) {
 }
 else{
   console.log("Pasta "+folderName+" nao encontrada!");
-  pegarPasta();
+  getScans(error, response, body);
 }
 
 }
