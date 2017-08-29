@@ -16,20 +16,13 @@ var username;
 var password;
 var dirName;
 
+var token = '';
+
 function pegarPasta(){
   folderName = readline.question("Nome da pasta dos scans:\n");
-  fazerLogin();
-
+  requisicaoNessus(null, null, {token: token});
 }
 
-function solicitarDados(){
-  username = readline.question("Usuario do Nessus:\n");
-  password = readline.question("Senha do Nessus:\n");	
-  
-  fazerLogin();
-}
-
-var token = '';
 function tratarDownload(scanId) {
   const tratar = (error, response, body) => {
     fs.writeFile(dirName+scanId+'.nessus', body, function (err) {
@@ -128,19 +121,10 @@ else{
 
 }
 
-function fazerLogin(){
-
-var options = {
-  method: 'post',
-  body: {username: username, password: password},
-  json: true,
-  rejectUnauthorized: false,
-  url: 'https://localhost:8834/session'
-}
-request(options, function(error, response, body) {
-  if(error="Invalid Credentials") {
-    //console.log("Error: " + error);
-    console.log("Falha ao realizar Login no Nessus, insira novamente as credencias: ")
+function requisicaoNessus(error, response, body){  
+  //console.log("Veja aqui o body: " , body);
+  if(body.error=="Invalid Credentials") {
+    console.log("Falha ao realizar Login no Nessus, insira novamente as credencias: ");
     solicitarDados();
   }
   else{
@@ -154,9 +138,26 @@ request(options, function(error, response, body) {
         'X-Cookie': 'token='+body.token,
       }
     }
-  };
-request(options, getScans);
+    request(options, getScans);
+  }
+}
 
-});}
+function fazerLogin(){
+  var options = {
+    method: 'post',
+    body: {username: username, password: password},
+    json: true,
+    rejectUnauthorized: false,
+    url: 'https://localhost:8834/session'
+  }
+  request(options, requisicaoNessus);
+}
+
+function solicitarDados(){
+  username = readline.question("Usuario do Nessus:\n");
+  password = readline.question("Senha do Nessus:\n"); 
+  
+  fazerLogin();
+}
 
 solicitarDados();
