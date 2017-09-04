@@ -3,8 +3,10 @@ var fs = require('fs');
 var prompt = require('prompt');
 var readline = require('readline-sync');
 var uuid = require('uuid/v4');
+var fs = require('fs');
 
-/*const folderName= process.argv[2];
+const filePath = process.argv[2];
+/*
 const username= process.argv[3];
 const password= process.argv[4];
 const dirName = process.argv[5];
@@ -66,7 +68,21 @@ function listFolders(error, response, body) {
   const num = readline.question("Escolha um folder (digite o numero):\n");
   folderId = body.folders[parseInt(num,10)-1].id;
   console.log('folderId: ',folderId);
-    createScan('192.168.25.13');
+  fs.exists(filePath, function(exists){
+   if(exists){ // results true
+      fs.readFile(filePath, {encoding: "utf8"}, function(err, data){
+         if(err){
+            console.log(err);
+            return;
+         }
+         const lines = data.toString().split('\n');
+         lines.forEach((line) => {
+           createScan('192.168.25.13');
+         });
+         
+      })
+   }
+  });
   
 }
 
