@@ -77,7 +77,7 @@ function listFolders(error, response, body) {
          }
          const lines = data.toString().split('\n');
          lines.forEach((line) => {
-           createScan('192.168.25.13');
+           createScan(line);
          });
          
       })
