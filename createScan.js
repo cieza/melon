@@ -2,17 +2,9 @@ var request = require('request');
 var fs = require('fs');
 var prompt = require('prompt');
 var readline = require('readline-sync');
-var uuid = require('uuid/v4');
 var fs = require('fs');
 
 const filePath = process.argv[2];
-/*
-const username= process.argv[3];
-const password= process.argv[4];
-const dirName = process.argv[5];
-if (!dirName.endsWith("/")) {
-dirName = dirName+"/";
-}*/
 
 var folderName;
 var username;
@@ -24,15 +16,11 @@ var folderId;
 var token = '';
 
 
-
 function scanCreated(error, response, body) {
   console.log('Created scan body: ',body);
-  console.log('Created scan error: ',error);
 }
 
 function createScan(ip) {
-  const uid = uuid();
-  console.log('uid: ',uid);
   const body = {uuid: 'ab4bacd2-05f6-425c-9d79-3ba3940ad1c24e51e1f403febe40',
     settings: {
       name: 'Scan do ip '+ip,
@@ -67,7 +55,6 @@ function listFolders(error, response, body) {
   });
   const num = readline.question("Escolha um folder (digite o numero):\n");
   folderId = body.folders[parseInt(num,10)-1].id;
-  console.log('folderId: ',folderId);
   fs.exists(filePath, function(exists){
    if(exists){ // results true
       fs.readFile(filePath, {encoding: "utf8"}, function(err, data){
@@ -94,7 +81,6 @@ function listPolicies(error, response, body) {
   });
   const num = readline.question("Escolha uma policy (digite o numero):\n");
   policyId = body.policies[parseInt(num,10)-1].id;
-  console.log('POlicyID: ',policyId);
   var options = {
     method: 'get',
     json: true,
@@ -109,7 +95,6 @@ function listPolicies(error, response, body) {
 }
 
 function requisicaoNessus(error, response, body){  
-  //console.log("Veja aqui o body: " , body);
   if(body.error=="Invalid Credentials") {
     console.log("Falha ao realizar Login no Nessus, insira novamente as credencias: ");
     solicitarDados();
