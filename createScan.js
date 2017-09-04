@@ -126,7 +126,7 @@ function fazerLogin(){
 
 function solicitarDados(){
   username = readline.question("Usuario do Nessus:\n");
-  password = readline.question("Senha do Nessus:\n"); 
+  password = readline.question("Senha do Nessus:\n", {hideEchoBack: true}); 
   
   fazerLogin();
 }
