@@ -17,7 +17,7 @@ var token = '';
 
 
 function scanCreated(error, response, body) {
-  console.log('Created scan body: ',body);
+  console.log('Created scan');
 }
 
 function createScan(ip) {
