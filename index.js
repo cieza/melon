@@ -3,14 +3,6 @@ var fs = require('fs');
 var prompt = require('prompt');
 var readline = require('readline-sync');
 
-/*const folderName= process.argv[2];
-const username= process.argv[3];
-const password= process.argv[4];
-const dirName = process.argv[5];
-if (!dirName.endsWith("/")) {
-dirName = dirName+"/";
-}*/
-
 var folderName;
 var username;
 var password;
