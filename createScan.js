@@ -1,3 +1,5 @@
+//Author: ECieza
+
 var request = require('request');
 var fs = require('fs');
 var prompt = require('prompt');
@@ -12,12 +14,17 @@ var password;
 var dirName;
 var policyId;
 var folderId;
+var IP = `localhost`;
 
 var token = '';
 
 
 function scanCreated(error, response, body) {
-  console.log('Created scan');
+    if(body.scan) {
+    console.log('Created scan: '+body.scan.name);
+    } else {
+    console.log('Error on create scan: ', body);
+    }
 }
 
 function createScan(ip) {
@@ -33,13 +40,14 @@ function createScan(ip) {
       emails: '',
       filter_type: '',
       filters: []}};
-      
+
     var options = {
       method: 'post',
       json: true,
       rejectUnauthorized: false,
-      url: 'https://localhost:8834/scans/',
+      url: 'https://'+IP+':8834/scans/',
       headers: {
+        'X-API-Token': '9B2B765E-2867-4DB0-9B60-EE8D0D1036EC',
         'X-Cookie': 'token='+token,
       },
       body: body,
@@ -53,7 +61,7 @@ function listFolders(error, response, body) {
     console.log(i+" - "+folder.name);
     i = i + 1;
   });
-  const num = readline.question("Escolha um folder (digite o numero):\n");
+  const num = readline.question("Escolha uma pasta (digite o numero):\n");
   folderId = body.folders[parseInt(num,10)-1].id;
   fs.exists(filePath, function(exists){
    if(exists){ // results true
@@ -66,11 +74,11 @@ function listFolders(error, response, body) {
          lines.forEach((line) => {
            createScan(line);
          });
-         
+
       })
    }
   });
-  
+
 }
 
 function listPolicies(error, response, body) {
@@ -85,16 +93,16 @@ function listPolicies(error, response, body) {
     method: 'get',
     json: true,
     rejectUnauthorized: false,
-    url: 'https://localhost:8834/folders',
+    url: 'https://'+IP+':8834/folders',
     headers: {
       'X-Cookie': 'token='+token,
     }
   }
   request(options, listFolders);
-  
+
 }
 
-function requisicaoNessus(error, response, body){  
+function requisicaoNessus(error, response, body){
   if(body.error=="Invalid Credentials") {
     console.log("Falha ao realizar Login no Nessus, insira novamente as credencias: ");
     solicitarDados();
@@ -105,7 +113,7 @@ function requisicaoNessus(error, response, body){
       method: 'get',
       json: true,
       rejectUnauthorized: false,
-      url: 'https://localhost:8834/policies',
+      url: 'https://'+IP+':8834/policies',
       headers: {
         'X-Cookie': 'token='+body.token,
       }
@@ -120,17 +128,17 @@ function fazerLogin(){
     body: {username: username, password: password},
     json: true,
     rejectUnauthorized: false,
-    url: 'https://localhost:8834/session'
+    url: 'https://'+IP+':8834/session'
   }
   request(options, requisicaoNessus);
 }
 
 function solicitarDados(){
   username = readline.question("Usuario do Nessus:\n");
-  password = readline.question("Senha do Nessus:\n", {hideEchoBack: true}); 
-  
+  password = readline.question("Senha do Nessus:\n", {hideEchoBack: true});
+  IP = readline.question("IP do Nessus:\n");
+
   fazerLogin();
 }
 
 solicitarDados();
- 
