@@ -21,6 +21,7 @@ var pathDir;
 var IP;
 
 var token = '';
+var XAPIToken = '';
 
 function pegarPasta(){
   folderName = readline.question("Nome da pasta dos scans:\n");
@@ -164,7 +165,7 @@ function importFile(fileuploaded, folderId) {
     body: {file: fileuploaded, folder_id: folderId},
     headers: {
       'X-Cookie': 'token='+token,
-       'X-API-Token': 'EA3942A5-4BD1-405C-AA65-7E681A531CFE',
+       'X-API-Token': XAPIToken,
     }
   };
 
@@ -214,6 +215,8 @@ function solicitarDados(){
   password = readline.question("Senha do Nessus:\n", {hideEchoBack: true});
 
   IP = readline.question("IP do Nessus:\n");
+
+  XAPIToken = readline.question("X-API-Token:\n");
 
   pathDir = readline.question("Caminho completo do diretorio onde estao os arquivos nessus:\n");
 

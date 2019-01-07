@@ -17,6 +17,7 @@ var folderId;
 var IP = `localhost`;
 
 var token = '';
+var XAPIToken = '';
 
 
 function scanCreated(error, response, body) {
@@ -47,7 +48,7 @@ function createScan(ip) {
       rejectUnauthorized: false,
       url: 'https://'+IP+':8834/scans/',
       headers: {
-        'X-API-Token': '9B2B765E-2867-4DB0-9B60-EE8D0D1036EC',
+        'X-API-Token': XAPIToken,
         'X-Cookie': 'token='+token,
       },
       body: body,
@@ -137,6 +138,7 @@ function solicitarDados(){
   username = readline.question("Usuario do Nessus:\n");
   password = readline.question("Senha do Nessus:\n", {hideEchoBack: true});
   IP = readline.question("IP do Nessus:\n");
+  XAPIToken = readline.question("X-API-Token:\n");
 
   fazerLogin();
 }
